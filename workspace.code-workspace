@@ -1,0 +1,27 @@
+{
+	"folders": [
+		{
+			"path": "modest_greeter"
+		}
+	],
+	"settings": {
+		"files.autoSave": "afterDelay",
+		"editor.cursorBlinking": "smooth",
+		"editor.cursorSmoothCaretAnimation": true,
+		"editor.cursorStyle": "block",
+		"editor.fontFamily": "'Fira Code', Consolas, 'Courier New', monospace",
+		"editor.fontLigatures": true,
+		"editor.formatOnPaste": true,
+		"editor.formatOnSave": true,
+		"files.autoGuessEncoding": true,
+		"files.trimTrailingWhitespace": true
+	},
+	"extensions": {
+		"recommendations": [
+			"saratravi.elixir-formatter",
+			"jakebecker.elixir-ls",
+			"lfs.vscode-emacs-friendly",
+			"MS-CEINTL.vscode-language-pack-ja"
+		]
+	}
+}
