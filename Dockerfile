@@ -78,28 +78,18 @@ RUN set -eux; \
 ENV LANG C.UTF-8
 ENV RUBY_MAJOR 3.1
 ENV RUBY_VERSION 3.1.2
-ENV RUBY_DOWNLOAD_SHA256 ca10d017f8a1b6d247556622c841fc56b90c03b1803f87198da1e4fd3ec3bf2a
+ENV RUBY_DOWNLOAD_SHA256 61843112389f02b735428b53bb64cf988ad9fb81858b8248e22e57336f24a83e
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
 RUN set -eux; \
 	\
-	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
-		bison \
-		dpkg-dev \
-		libgdbm-dev \
-		ruby \
-	; \
-	rm -rf /var/lib/apt/lists/*; \
-	\
-	wget -O ruby.tar.xz "https://cache.ruby-lang.org/pub/ruby/${RUBY_MAJOR%-rc}/ruby-$RUBY_VERSION.tar.xz"; \
-	echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.xz" | sha256sum --check --strict; \
+	wget -O ruby.tar.gz "https://cache.ruby-lang.org/pub/ruby/${RUBY_MAJOR%}/ruby-$RUBY_VERSION.tar.gz"; \
+	echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.gz" | sha256sum --check --strict; \
 	\
 	mkdir -p /usr/src/ruby; \
-	tar -xJf ruby.tar.xz -C /usr/src/ruby --strip-components=1; \
-	rm ruby.tar.xz; \
+	tar -xf ruby.tar.gz -C /usr/src/ruby --strip-components=1; \
+	rm ruby.tar.gz; \
 	\
 	cd /usr/src/ruby; \
 	\
@@ -121,19 +111,6 @@ RUN set -eux; \
 	; \
 	make -j "$(nproc)"; \
 	make install; \
-	\
-	apt-mark auto '.*' > /dev/null; \
-	apt-mark manual $savedAptMark > /dev/null; \
-	find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
-		| awk '/=>/ { print $(NF-1) }' \
-		| sort -u \
-		| grep -vE '^/usr/local/lib/' \
-		| xargs -r dpkg-query --search \
-		| cut -d: -f1 \
-		| sort -u \
-		| xargs -r apt-mark manual \
-	; \
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	\
 	cd /; \
 	rm -r /usr/src/ruby; \
