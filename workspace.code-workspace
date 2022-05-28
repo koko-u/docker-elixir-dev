@@ -1,7 +1,7 @@
 {
 	"folders": [
 		{
-			"path": "modest_greeter"
+			"path": "."
 		}
 	],
 	"settings": {
@@ -14,7 +14,18 @@
 		"editor.formatOnPaste": true,
 		"editor.formatOnSave": true,
 		"files.autoGuessEncoding": true,
-		"files.trimTrailingWhitespace": true
+		"files.trimTrailingWhitespace": true,
+		"[html-eex]": {
+			"editor.trimAutoWhitespace": false,
+			"files.trimTrailingWhitespace": true,
+			"files.insertFinalNewline": true,
+			"files.trimFinalNewlines": true,
+			"editor.defaultFormatter": "RoyalMist.vscode-eex-format"
+		},
+		"emmet.triggerExpansionOnTab": true,
+		"emmet.includeLanguages": {
+			"html-eex": "html"
+		},
 	},
 	"extensions": {
 		"recommendations": [
